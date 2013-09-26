@@ -12,4 +12,5 @@ class Area
     @tax_returns_filed = hash[:tax_returns_filed].to_i || 0
     @latitude = hash[:lat].to_f || 0.0
     @latitude = hash[:long].to_f || 0.0
+  end
 end
