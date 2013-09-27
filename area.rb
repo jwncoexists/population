@@ -1,3 +1,4 @@
+# Setup a hash to keep track of the important data from the zip code file to be analyzed later
 class Area
 
   attr_accessor :zipcode, :city, :state, :estimated_population, :total_wages, :tax_returns_filed
@@ -12,5 +13,9 @@ class Area
     @tax_returns_filed = hash[:tax_returns_filed].to_i || 0
     @latitude = hash[:lat].to_f || 0.0
     @longtude = hash[:long].to_f || 0.0
+  end
+
+  def to_s
+    "#{self.city}, #{self.state} #{self.zipcode} has #{self.estimated_population} people who collective earn $#{self.total_wages}."
   end
 end
