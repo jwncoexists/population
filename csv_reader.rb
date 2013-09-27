@@ -13,31 +13,30 @@ end
 # class CSVReader includes method for processing lines in the zip code file
 class CSVReader
 
-  attr_accessor :fname, :headers, :fileobj
+  attr_accessor :fname, :headers, :file_text
 
+  #/ open the data file and load the text into a variable called filetext
   def initialize(filename)
     @fname = filename
-    @fileobj = File.new(filename,'r')
+    @file_text = File.open(filename).read
+    @file_text.gsub!(/\r\n?/, "\n")
   end
 
   # parse a delimited header line into an array of symbols
-  def headers=(header_str)
+  def parse_header(header_str)
     # convert to an array, remove the quotes & newline, then convert to symbols
     @headers = header_str.split(',')
     @headers.map! do |h|
-      
-      # remove quotes & leading/trailing whitespace
       h.gsub!('"','')
       h.strip!
-      
-      # do more formatting and convert to symbols
       h.underscore.to_sym
     end
     @headers
   end
 
-  # parse a comma delimited string & return values in a data hash using @headers
-  def line=(line_str)
+
+  # parse a comma delimited string & return string values in a data hash using @headers as the indices
+  def parse_data_line(line_str)
     array = line_str.split(',')
     data_hash = {}
     @headers.each_with_index do |header, i|
@@ -50,12 +49,8 @@ class CSVReader
 
   # loop through file, reading lines, and yeilding results to calling block
   def read
-    # read the header line and setup the headers hash
-    self.headers=(fileobj.readline)
-
-    # read remainder of the file
-    while(!fileobj.eof? && next_line = fileobj.readline)
-      yield(self.line=(next_line))
+    self.file_text.each_line do |next_line|
+      !self.headers ? parse_header(next_line) : yield(self.parse_data_line(next_line))
     end
   end
 end

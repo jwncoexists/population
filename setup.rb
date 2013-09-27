@@ -8,7 +8,7 @@ class Setup
 
   def initialize
     csv = CSVReader.new("./free-zipcode-database.csv")
-    @areas = []  
+    @areas = [] 
     csv.read do |item|
       areas << Area.new(item) 
     end
