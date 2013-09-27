@@ -10,7 +10,8 @@ class Setup
     csv = CSVReader.new("./free-zipcode-database.csv")
     @areas = [] 
     csv.read do |item|
-      areas << Area.new(item) 
+      @areas << Area.new(item) 
     end
   end
 end
+

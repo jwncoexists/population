@@ -10,7 +10,7 @@ class String
   end
 end
 
-# class CSVReader includes method for processing lines in the zip code file
+# reads in .csv file and includes methods for reading and parsing lines in the zip code data file
 class CSVReader
 
   attr_accessor :fname, :headers, :file_text
@@ -24,7 +24,6 @@ class CSVReader
 
   # parse a delimited header line into an array of symbols
   def parse_header(header_str)
-    # convert to an array, remove the quotes & newline, then convert to symbols
     @headers = header_str.split(',')
     @headers.map! do |h|
       h.gsub!('"','')
@@ -47,7 +46,7 @@ class CSVReader
     data_hash
   end
 
-  # loop through file, reading lines, and yeilding results to calling block
+  # loop through text line by line, and yeilding results to calling block
   def read
     self.file_text.each_line do |next_line|
       !self.headers ? parse_header(next_line) : yield(self.parse_data_line(next_line))
