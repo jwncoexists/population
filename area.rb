@@ -16,6 +16,6 @@ class Area
   end
 
   def to_s
-    "#{self.city}, #{self.state} #{self.zipcode} has #{self.estimated_population} people who collective earn $#{self.total_wages}."
+    "#{self.city}, #{self.state} #{self.zipcode} has #{self.estimated_population} people who collectively earn $#{self.total_wages}."
   end
 end
