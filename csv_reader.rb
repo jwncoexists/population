@@ -13,17 +13,15 @@ end
 # reads in .csv file and includes methods for reading and parsing lines in the zip code data file
 class CSVReader
 
-  attr_accessor :fname, :headers, :file_text
+  attr_accessor :fname, :headers, :fileobj
 
   #/ open the data file and load the text into a variable called filetext
   def initialize(filename)
     @fname = filename
-    @file_text = File.open(filename).read
-    @file_text.gsub!(/\r\n?/, "\n")
   end
 
   # parse a delimited header line into an array of symbols
-  def parse_header(header_str)
+  def parse_header_line(header_str)
     @headers = header_str.split(',')
     @headers.map! do |h|
       h.gsub!('"','')
@@ -46,10 +44,14 @@ class CSVReader
     data_hash
   end
 
-  # loop through text line by line, and yeilding results to calling block
+  # loop through text line by line, and yeild results to calling block
   def read
-    self.file_text.each_line do |next_line|
-      !self.headers ? parse_header(next_line) : yield(self.parse_data_line(next_line))
+    @fileobj = File.open(@fname,"r")
+    parse_header_line(@fileobj.readline) unless @fileobj.eof?
+
+    while (!@fileobj.eof?)
+      yield(parse_data_line(@fileobj.readline))
     end
   end
+
 end

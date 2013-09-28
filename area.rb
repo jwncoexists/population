@@ -8,9 +8,9 @@ class Area
     @zipcode = hash[:zipcode].to_i || 0
     @city = hash[:city] || "n/a"
     @state = hash[:state] || "n/a"
-    @estimated_population = hash[:estimated_population].to_f || 0
-    @total_wages = hash[:total_wages].to_f || 0
-    @tax_returns_filed = hash[:tax_returns_filed].to_f || 0
+    @estimated_population = hash[:estimated_population].to_i || 0
+    @total_wages = hash[:total_wages].to_i || 0
+    @tax_returns_filed = hash[:tax_returns_filed].to_i || 0
     @latitude = hash[:lat].to_f || 0.0
     @longtude = hash[:long].to_f || 0.0
   end
