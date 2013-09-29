@@ -2,6 +2,13 @@
 # @options is a hash array of menu options
 require_relative 'area.rb'
 
+class String
+   def currency_format()
+      while self.sub!(/(\d+)(\d\d\d)/,'\1,\2'); end
+      self
+   end
+end
+
 class Analytics
 
   attr_accessor :options, :areas, :exitid
@@ -36,37 +43,39 @@ class Analytics
   end
 
   def how_many
-    p "There are #{@areas.length} areas in the zip code file."
+    p "There are #{@areas.length} areas in the zip code file"
   end
 
   def smallest_pop
     sorted = @areas.sort { |x,y| x.estimated_population <=> y.estimated_population }
     # find the first, none-zero population
     smallest = sorted.drop_while { |i| i.estimated_population == 0 }.first
-    p "#{smallest.city}, #{smallest.state} #{smallest.zipcode} has the smallest estimated population of: #{smallest.estimated_population}."
+    p "#{smallest.city}, #{smallest.state} #{smallest.zipcode} has the smallest estimated population of: #{smallest.estimated_population}"
   end
 
   def largest_pop
     sorted = @areas.sort { |x,y| y.estimated_population <=> x.estimated_population }
     largest = sorted.first
-    p "#{largest.city}, #{largest.state} #{largest.zipcode} has the largest estimated population of: #{largest.estimated_population}."
+    p "#{largest.city}, #{largest.state} #{largest.zipcode} has the largest estimated population of: #{largest.estimated_population}"
   end
 
   def lowest_wages
     sorted = @areas.sort { |x,y| x.total_wages <=> y.total_wages }
     smallest = sorted.drop_while { |i| i.total_wages == 0 }.first
-    p "#{smallest.city}, #{smallest.state} #{smallest.zipcode} has the lowest total wages of: $ #{smallest.total_wages}."
+    wages = smallest.total_wages.to_s.currency_format
+    p "#{smallest.city}, #{smallest.state} #{smallest.zipcode} has the lowest total wages of: $ #{wages}"
   end
 
   def highest_wages
     sorted = @areas.sort { |x,y| y.total_wages <=> x.total_wages }
     largest = sorted.first
-    p "#{largest.city}, #{largest.state} #{largest.zipcode} has the highest total wages of: $ #{largest.total_wages}."
+    wages = largest.total_wages.to_s.currency_format
+    p "#{largest.city}, #{largest.state} #{largest.zipcode} has the highest total wages of: $ #{wages}"
   end
 
   def california_zips
     c = @areas.count { |a| a.state == "CA"}
-    p "California has a total of: #{c} zip codes."
+    p "California has a total of: #{c} zip codes"
   end
 
   def zip_info
@@ -77,7 +86,7 @@ class Analytics
       p ""
       ziplist.each { |z| p z }
     else
-      p "Zip code: #{zip} not found."
+      p "Zip code: #{zip} not found"
     end
   end
 end

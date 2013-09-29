@@ -11,6 +11,7 @@ class Population
   end
 
   def show_menu
+    p ""
     p "Population Menu"
     p "---------------"
     @analytics.options.each do |opt|
