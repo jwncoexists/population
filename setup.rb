@@ -12,6 +12,7 @@ class Setup
     csv.read do |item|
       @areas << Area.new(item) 
     end
+    p @areas.last
   end
 end
 

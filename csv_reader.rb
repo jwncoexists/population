@@ -34,7 +34,10 @@ class CSVReader
 
   # parse a comma delimited string & return string values in a data hash using @headers as the indices
   def parse_data_line(line_str)
-    array = line_str.split(',')
+    array = []
+    # The split method will not work because ',' are embedded in the data
+    # array = line_str.split(',')
+    line_str.scan( /([^",]+)|"([^"]+)"/ ){ array << ($1 || $2) }
     data_hash = {}
     @headers.each_with_index do |header, i|
       if (!array[i].nil?)
